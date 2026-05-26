@@ -26,9 +26,9 @@ export default function Home() {
               </Link>
               <Link
                 href="/about"
-                className="flex h-12 px-8 items-center justify-center rounded-lg border border-foreground/20 text-background font-medium hover:bg-foreground/5 transition-all"
+                className="flex h-12 px-8 items-center justify-center rounded-lg border border-foreground text-background font-medium hover:bg-background/90 transition-all"
               >
-                Learn More
+                Our Story
               </Link>
             </div>
           </div>

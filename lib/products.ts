@@ -4,7 +4,7 @@ export const products = [
     name: "Oversized Black Tee",
     price: 45,
     category: "tops",
-    image: "/placeholder-top1.jpg",
+    image: "https://placehold.co/600x800/111111/C9A84C?text=ATHENA",
     description: "Heavyweight cotton oversized t-shirt with dropped shoulders"
   },
   {
@@ -12,7 +12,7 @@ export const products = [
     name: "White Long Sleeve",
     price: 55,
     category: "tops",
-    image: "/placeholder-top2.jpg",
+    image: "https://placehold.co/600x800/111111/C9A84C?text=ATHENA",
     description: "Premium white long sleeve with subtle chest print"
   },
   {
@@ -20,7 +20,7 @@ export const products = [
     name: "Black Cargo Pants",
     price: 95,
     category: "bottoms",
-    image: "/placeholder-bottom1.jpg",
+    image: "https://placehold.co/600x800/111111/C9A84C?text=ATHENA",
     description: "Utility cargo pants with multiple pockets and adjustable cuffs"
   },
   {
@@ -28,7 +28,7 @@ export const products = [
     name: "Olive Joggers",
     price: 85,
     category: "bottoms",
-    image: "/placeholder-bottom2.jpg",
+    image: "https://placehold.co/600x800/111111/C9A84C?text=ATHENA",
     description: "Tapered olive joggers with elastic waistband and cuffs"
   },
   {
@@ -36,7 +36,7 @@ export const products = [
     name: "Leather Chain Belt",
     price: 65,
     category: "accessories",
-    image: "/placeholder-accessory1.jpg",
+    image: "https://placehold.co/600x800/111111/C9A84C?text=ATHENA",
     description: "Heavy leather belt with antique brass chain detail"
   },
   {
@@ -44,7 +44,7 @@ export const products = [
     name: "Silver Signet Ring",
     price: 40,
     category: "accessories",
-    image: "/placeholder-accessory2.jpg",
+    image: "https://placehold.co/600x800/111111/C9A84C?text=ATHENA",
     description: "Oval silver signet ring with ATHENA emblem engraving"
   }
 ];
