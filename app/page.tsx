@@ -24,12 +24,12 @@ export default function Home() {
               >
                 Shop Collection
               </Link>
-              <Link
-                href="/about"
-                className="flex h-12 px-8 items-center justify-center rounded-lg border border-foreground text-background font-medium hover:bg-background/90 transition-all"
-              >
-                Our Story
-              </Link>
+<Link
+  href="/about"
+  className="flex h-12 px-8 items-center justify-center rounded-lg border border-foreground bg-background/50 text-background font-medium hover:bg-background/70 transition-all"
+>
+  Our Story
+</Link>
             </div>
           </div>
         </section>
