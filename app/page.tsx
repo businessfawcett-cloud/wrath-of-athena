@@ -26,7 +26,7 @@ export default function Home() {
               </Link>
 <Link
   href="/about"
-  className="flex h-12 px-8 items-center justify-center rounded-lg border border-foreground bg-background text-white font-medium hover:bg-background/70 transition-all"
+  className="flex h-12 px-8 items-center justify-center rounded-lg border border-foreground bg-background text-white font-medium hover:bg-background/70 hover:text-white transition-all"
 >
   Our Story
 </Link>
