@@ -48,6 +48,14 @@ export default async function Home() {
     client.fetch(siteSettingsQuery),
     client.fetch(featuredProductsQuery)
   ]);
+  
+  // Debug: Check all document types
+  const allDocuments = await client.fetch('*[]{_type}');
+  console.log('All document types:', JSON.stringify(allDocuments, null, 2));
+  
+  // Debug: Check specific product query
+  const allProducts = await client.fetch(`*[_type == "product"]`);
+  console.log('Sanity products:', JSON.stringify(allProducts, null, 2));
 
   const { storeName, tagline, heroHeading, heroSubheading } = siteSettings || {
     storeName: "WRATH OF ATHENA",

@@ -34,11 +34,14 @@ export const product = defineType({
       name: 'category',
       title: 'Category',
       type: 'string',
-      validation: (Rule) => Rule.required().validity('select', [
-        { value: 'tops', message: 'Must be one of: tops, bottoms, accessories' },
-        { value: 'bottoms', message: 'Must be one of: tops, bottoms, accessories' },
-        { value: 'accessories', message: 'Must be one of: tops, bottoms, accessories' },
-      ]),
+      validation: (Rule) => 
+        Rule.required()
+          .custom((value, context) => {
+            if (!value || !['tops', 'bottoms', 'accessories'].includes(value)) {
+              return 'Must be one of: tops, bottoms, accessories'
+            }
+            return true
+          }),
       options: {
         list: [
           { title: 'Tops', value: 'tops' },

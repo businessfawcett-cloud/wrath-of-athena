@@ -41,7 +41,14 @@ export default function Shop() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        // Debug: Check all document types
+        const allDocuments = await client.fetch('*[]{_type}');
+        console.log('All document types:', JSON.stringify(allDocuments, null, 2));
+        
+        // Debug: Check specific product query
         const fetchedProducts = await client.fetch(allProductsQuery);
+        console.log('Sanity products:', JSON.stringify(fetchedProducts, null, 2));
+        
         setProducts(fetchedProducts);
       } catch (error) {
         console.error("Error fetching products:", error);
