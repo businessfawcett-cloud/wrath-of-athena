@@ -2,47 +2,34 @@ import { defineType, defineField } from 'sanity'
 import { CogIcon } from '@sanity/icons'
 
 export const siteSettings = defineType({
-  name: 'globalSettings',
+  name: 'siteSettings',
   title: 'Site Settings',
   type: 'document',
   icon: CogIcon,
   fields: [
     defineField({
-      name: 'name',
-      title: 'Business Name',
+      name: 'storeName',
+      title: 'Store Name',
       type: 'string',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'tagline',
       title: 'Tagline',
       type: 'string',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'logo',
-      title: 'Logo',
-      type: 'image',
-    }),
-    defineField({
-      name: 'phone',
-      title: 'Phone',
+      name: 'heroHeading',
+      title: 'Hero Heading',
       type: 'string',
+      validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'email',
-      title: 'Email',
+      name: 'heroSubheading',
+      title: 'Hero Subheading',
       type: 'string',
-    }),
-    defineField({
-      name: 'address',
-      title: 'Address',
-      type: 'text',
-      rows: 3,
-    }),
-    defineField({
-      name: 'hours',
-      title: 'Business Hours',
-      type: 'text',
-      rows: 3,
+      validation: (Rule) => Rule.required(),
     }),
   ],
 })

@@ -1,7 +1,61 @@
 import Link from "next/link";
-import { products } from "@/lib/products";
+import { client } from "@/sanity/lib/client";
+import { groq } from "groq";
+import Image from "next/image";
 
-export default function Home() {
+// GROQ queries to fetch data
+const siteSettingsQuery = groq`
+  *[_type == "siteSettings"][0] {
+    storeName,
+    tagline,
+    heroHeading,
+    heroSubheading
+  }
+`;
+
+const featuredProductsQuery = groq`
+  *[_type == "product" && featured == true] {
+    _id,
+    name,
+    slug,
+    price,
+    description,
+    image,
+    category
+  } | order(_createdAt desc) [0...4]
+`;
+
+interface SiteSettings {
+  storeName: string;
+  tagline: string;
+  heroHeading: string;
+  heroSubheading: string;
+}
+
+interface Product {
+  _id: string;
+  name: string;
+  slug: { current: string };
+  price: number;
+  description: string;
+  image: { asset: { url: string } };
+  category: string;
+}
+
+export default async function Home() {
+  // Fetch data in parallel
+  const [siteSettings, featuredProducts] = await Promise.all([
+    client.fetch(siteSettingsQuery),
+    client.fetch(featuredProductsQuery)
+  ]);
+
+  const { storeName, tagline, heroHeading, heroSubheading } = siteSettings || {
+    storeName: "WRATH OF ATHENA",
+    tagline: "Minimalist streetwear for the modern warrior",
+    heroHeading: "WRATH OF ATHENA",
+    heroSubheading: "Minimalist streetwear for the modern warrior"
+  };
+
   return (
     <>
       <main className="flex-1 w-full">
@@ -12,10 +66,10 @@ export default function Home() {
           </div>
           <div className="relative z-10 flex flex-col items-center text-center px-6">
             <h1 className="text-5xl font-bold-condensed tracking-tighter text-foreground mb-4">
-              WRATH OF ATHENA
+              {heroHeading}
             </h1>
             <p className="text-xl text-foreground/80 max-w-2xl">
-              Minimalist streetwear for the modern warrior
+              {heroSubheading}
             </p>
             <div className="mt-8 flex space-x-4">
               <Link
@@ -24,12 +78,12 @@ export default function Home() {
               >
                 Shop Collection
               </Link>
-<Link
-  href="/about"
-  className="flex h-12 px-8 items-center justify-center rounded-lg border border-foreground bg-background text-white font-medium hover:bg-background/70 hover:text-white transition-all"
->
-  Our Story
-</Link>
+              <Link
+                href="/about"
+                className="flex h-12 px-8 items-center justify-center rounded-lg border border-foreground bg-background text-white font-medium hover:bg-background/70 hover:text-white transition-all"
+              >
+                Our Story
+              </Link>
             </div>
           </div>
         </section>
@@ -41,16 +95,17 @@ export default function Home() {
               Featured Collection
             </h2>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {products.slice(0, 4).map((product) => (
+              {featuredProducts?.map((product: Product) => (
                 <Link
-                  key={product.id}
-                  href={`/shop/${product.id}`}
+                  key={product._id}
+                  href={`/shop/${product.slug.current}`}
                   className="group flex flex-col items-center justify-between h-full bg-background/50 hover:bg-background/70 transition-all border border-foreground/10"
                 >
                   <div className="w-full h-48 flex-shrink-0 flex items-center justify-center overflow-hidden">
-                    <img
-                      src={product.image}
+                    <Image
+                      src={product.image.asset.url}
                       alt={product.name}
+                      fill
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>

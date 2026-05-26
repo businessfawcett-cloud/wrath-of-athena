@@ -1,12 +1,57 @@
 "use client";
 
 import Link from "next/link";
-import { products, categories } from "@/lib/products";
-import { useState } from "react";
+import { client } from "@/sanity/lib/client";
+import { groq } from "groq";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+
+// GROQ query to fetch all products
+const allProductsQuery = groq`
+  *[_type == "product"] {
+    _id,
+    name,
+    slug,
+    price,
+    description,
+    image,
+    category,
+    featured
+  } | order(_createdAt desc)
+`;
+
+interface Product {
+  _id: string;
+  name: string;
+  slug: { current: string };
+  price: number;
+  description: string;
+  image: { asset: { url: string } };
+  category: string;
+  featured: boolean;
+}
 
 export default function Shop() {
+  const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  // Fetch products from Sanity
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const fetchedProducts = await client.fetch(allProductsQuery);
+        setProducts(fetchedProducts);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const filteredProducts = products.filter(product => {
     const matchesCategory = selectedCategory ? product.category === selectedCategory : true;
@@ -14,6 +59,24 @@ export default function Shop() {
                          product.description.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
+
+  // Get unique categories from products
+  const categories = Array.from(new Set(products.map(product => product.category)));
+
+  if (loading) {
+    return (
+      <main className="flex-1 w-full">
+        <section className="py-12">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-accent mx-auto mb-4"></div>
+              <p className="text-foreground/60">Loading products...</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <>
@@ -59,15 +122,15 @@ export default function Shop() {
                 </button>
                 {categories.map(category => (
                   <button
-                    key={category.id}
-                    onClick={() => setSelectedCategory(category.id)}
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
                     className={`px-4 py-2 rounded-lg text-sm font-medium 
-                             ${selectedCategory === category.id 
+                             ${selectedCategory === category 
                                ? 'bg-accent text-background' 
                                : 'border border-foreground/20 text-foreground/80'}
                              hover:bg-accent/10 transition-all`}
                   >
-                    {category.name}
+                    {category.charAt(0).toUpperCase() + category.slice(1)}
                   </button>
                 ))}
               </div>
@@ -86,14 +149,15 @@ export default function Shop() {
               <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {filteredProducts.map((product) => (
                   <Link
-                    key={product.id}
-                    href={`/shop/${product.id}`}
+                    key={product._id}
+                    href={`/shop/${product.slug.current}`}
                     className="group flex flex-col items-center justify-between h-full bg-background/50 hover:bg-background/70 transition-all border border-foreground/10"
                   >
                     <div className="w-full h-48 flex-shrink-0 flex items-center justify-center overflow-hidden">
-                      <img
-                        src={product.image}
+                      <Image
+                        src={product.image.asset.url}
                         alt={product.name}
+                        fill
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>

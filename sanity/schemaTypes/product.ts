@@ -1,0 +1,74 @@
+import { defineType, defineField } from 'sanity'
+import { ProductIcon } from '@sanity/icons'
+
+export const product = defineType({
+  name: 'product',
+  title: 'Product',
+  type: 'document',
+  icon: ProductIcon,
+  fields: [
+    defineField({
+      name: 'name',
+      title: 'Product Name',
+      type: 'string',
+      validation: (Rule) => Rule.required().max(100),
+    }),
+    defineField({
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'name',
+        maxLength: 96,
+      },
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'price',
+      title: 'Price',
+      type: 'number',
+      validation: (Rule) => Rule.required().min(0),
+      description: 'Price in USD',
+    }),
+    defineField({
+      name: 'category',
+      title: 'Category',
+      type: 'string',
+      validation: (Rule) => Rule.required().validity('select', [
+        { value: 'tops', message: 'Must be one of: tops, bottoms, accessories' },
+        { value: 'bottoms', message: 'Must be one of: tops, bottoms, accessories' },
+        { value: 'accessories', message: 'Must be one of: tops, bottoms, accessories' },
+      ]),
+      options: {
+        list: [
+          { title: 'Tops', value: 'tops' },
+          { title: 'Bottoms', value: 'bottoms' },
+          { title: 'Accessories', value: 'accessories' },
+        ],
+        layout: 'dropdown',
+      },
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      validation: (Rule) => Rule.required().max(500),
+    }),
+    defineField({
+      name: 'image',
+      title: 'Product Image',
+      type: 'image',
+      validation: (Rule) => Rule.required(),
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
+      name: 'featured',
+      title: 'Featured Product',
+      type: 'boolean',
+      description: 'Show this product on the homepage',
+      initialValue: false,
+    }),
+  ],
+})
