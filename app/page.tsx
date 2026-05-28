@@ -103,33 +103,39 @@ export default async function Home() {
               Featured Collection
             </h2>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {featuredProducts?.map((product: Product) => (
-                <Link
-                  key={product._id}
-                  href={`/shop/${product.slug.current}`}
-                  className="group flex flex-col items-center justify-between h-full bg-background/50 hover:bg-background/70 transition-all border border-foreground/10"
-                >
-                  <div className="w-full h-48 flex-shrink-0 flex items-center justify-center overflow-hidden">
-                    <Image
-                      src={product.image.asset.url}
-                      alt={product.name}
-                      fill
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
-                  <div className="px-4 py-6 w-full text-left flex-1">
-                    <h3 className="text-lg font-bold-condensed mb-2 text-foreground line-clamp-2">
-                      {product.name}
-                    </h3>
-                    <p className="text-sm text-foreground/60 mb-4 line-clamp-2">
-                      {product.description}
-                    </p>
-                    <p className="mt-auto text-xl font-bold text-accent">
-                      ${product.price}
-                    </p>
-                  </div>
-                </Link>
-              ))}
+              {featuredProducts?.length > 0 ? (
+                featuredProducts.map((product: Product) => (
+                  <Link
+                    key={product._id}
+                    href={`/shop/${product.slug.current}`}
+                    className="group flex flex-col items-center justify-between h-full bg-background/50 hover:bg-background/70 transition-all border border-foreground/10"
+                  >
+                    <div className="w-full h-48 flex-shrink-0 flex items-center justify-center overflow-hidden">
+                      <Image
+                        src={product.image.asset.url}
+                        alt={product.name}
+                        fill
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="px-4 py-6 w-full text-left flex-1">
+                      <h3 className="text-lg font-bold-condensed mb-2 text-foreground line-clamp-2">
+                        {product.name}
+                      </h3>
+                      <p className="text-sm text-foreground/60 mb-4 line-clamp-2">
+                        {product.description}
+                      </p>
+                      <p className="mt-auto text-xl font-bold text-accent">
+                        ${product.price}
+                      </p>
+                    </div>
+                  </Link>
+                ))
+              ) : (
+                <div className="col-span-full text-center py-12">
+                  <p className="text-foreground/60">No featured products available</p>
+                </div>
+              )}
             </div>
           </div>
         </section>
