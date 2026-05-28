@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { client } from "@/sanity/lib/client";
-import { groq } from "groq";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
